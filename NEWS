@@ -1,89 +1,53 @@
-aria2 1.33.0
+aria2 1.35.0
 ============
 
 Release Note
 ------------
 
-This release fixes several bugs, and add new features.
+This release fixes several bugs.  See Changes for details.
 
 Changes
 -------
 
-* Include arm in a filename of android zip
+* Update mingw build dependencies
 
-* Upgrade base image of Dockerfile.mingw to ubuntu:16.04
+  GH-1469
 
-* wintls: Potential fix for undecrypted read
+* Update android build dependencies
 
-  GH-1021
+  Update android build dependencies.  Use android NDK r20 and build
+  aarch64 binary.
 
-* libaria2: Return last error code from DownloadHandle::getErrorCode
+  GH-1467
 
-  GH-991
+* Drop SSLv3.0 and TLSv1.0 and add TLSv1.3
 
-* Windows: pass writefds also as exceptfds to select()
+  TLSv1.3 support is added for GNUTLS and OpenSSL.
 
-  winsock notifies connect() failures on exceptfds instead of
-  writefds.
+  GH-1385
 
-  Fixes GH-969
-  Fixes GH-975
+* Platform: Fix compilation without deprecated OpenSSL APIs
 
-* libuv: use pkg-config
+  Patch from Rosen Penev
 
-* FeatureConfig: align text
+  GH-1315
 
-* Update Dockerfile.mingw
+* Remove linux getrandom and use C++ stdlib instead
 
-  avoid docker cache when using git
+  GH-1306
 
-  Patch from qweaszxcdf
+* Don't send Accept Metalink header if Metalink is disabled
 
-  GH-970
+  GH-1300
 
-* Add --peer-agent option
+* gnutls: Fix bug that commonName is always empty
 
-  Add --peer-agent for setting the version/user agent used in the
-  extended handshake protocol for bittorrent.
+  GH-1214
 
-  Patch from Kurt Kartaltepe
+* Fix openssl API version logic for libressl 2.7.x
 
-  GH-947
+  Patch from Ben Chaney
 
-* OSX: Allow to specify a build
+  GH-1213
 
-* OSX: update c-ares
-
-* [Docs, libaria2] Fix type of obj pushed into options vector
-
-  aria::KeyVals is a vector of pair of std strings, therefore the type
-  of object being pushed should be std::pair<std::string,
-  std::string>, however in the docs, the type of the said object is
-  KeyVals.  If one follows the docs, their code will fail to compile.
-
-  Patch from geetam
-
-  GH-941
-
-* AppleTLS: Silence cipher suite selection
-
-* Unbreak build OSX build
-
-* Update macOS versions
-
-* Add --bt-load-saved-metadata option
-
-  Before getting torrent metadata from DHT when downloading with
-  magnet link, first try to read file saved by --bt-save-metadata
-  option. If it is successful, then skip downloading metadata from
-  DHT.  By default, this feature is turned off.
-
-  GH-909
-
-* Fix regression in bfc54d0b9a694e5d87efd8ed11b5393bc4b66f93
-
-  Don't save control file if --auto-save-interval is 0.
-
-  GH-917
-
-* Fix infinite loop bug when file is not found
+* Fix build failure when InternalDHKeyExchange is used
